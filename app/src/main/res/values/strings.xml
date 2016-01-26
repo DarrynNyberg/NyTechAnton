@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">WeBuildApps</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="MENU_SECTION_ICON">
+        <item>@mipmap/home_icon</item>
+        <item>@mipmap/profile_icon</item>
+        <item>@mipmap/favorite_icon</item>
+        <item>@mipmap/location_icon</item>
+        <item>@mipmap/history_icon</item>
+        <item>@mipmap/more_icon</item>
+        <item>@mipmap/contact_icon</item>
+    </string-array>
+    <string-array name="MENU_SECTION">
+        <item>LOGIN</item>
+        <item>ACCOUNT</item>
+        <item>Favorit</item>
+        <item>Request</item>
+        <item>History</item>
+        <item>More</item>
+        <item>Contact Us</item>
+    </string-array>
+    <string-array name="NEW_MENU_SECTION_ICON">
+        <item>@mipmap/home_icon</item>
+    </string-array>
+    <string-array name="NEW_MENU_SECTION">
+        <item>LOGIN</item>
+    </string-array>
+
+</resources>
