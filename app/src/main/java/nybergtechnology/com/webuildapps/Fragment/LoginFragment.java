@@ -33,6 +33,7 @@ import nybergtechnology.com.webuildapps.NavigationDrawerFragment;
 import nybergtechnology.com.webuildapps.R;
 import nybergtechnology.com.webuildapps.Utility.CommnUtility;
 import nybergtechnology.com.webuildapps.Utility.Constant;
+import nybergtechnology.com.webuildapps.Utility.UserUtility;
 import nybergtechnology.com.webuildapps.classes.SessionObject;
 
 /**
@@ -135,7 +136,7 @@ public class LoginFragment extends Fragment {
         try{
             urlParameters =
                     String.format("%s=", Constant.LOG_IN_API_POST_DATA_USER) + URLEncoder.encode(email, "UTF-8") +
-                            String.format("&%s=", Constant.LOG_IN_API_POST_DATA_USER) + URLEncoder.encode(pass, "UTF-8");
+                            String.format("&%s=", Constant.LOG_IN_API_POST_DATA_PASSWORD) + URLEncoder.encode(pass, "UTF-8");
 
         }catch (UnsupportedEncodingException e){
             e.printStackTrace();
@@ -201,7 +202,7 @@ public class LoginFragment extends Fragment {
         NavigationDrawerFragment.sharedInstance.OpenDrawer();
     }
 
-    private class LoginTask extends AsyncTask<String, Void, List<String>> {
+    private class LoginTask extends AsyncTask<String, Void, String> {
         ProgressDialog dlg;
 
         @Override
@@ -224,22 +225,22 @@ public class LoginFragment extends Fragment {
 
         // Downloading data in non-ui thread
         @Override
-        protected List<String> doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
-            List<String> result = new ArrayList<>();
+            String response = null;
             String url = params[0];
             String param = params[1];
-            String response = excutePost(url, param);
+            response = excutePost(url, param);
             if (response != null)
-                result.add(response);
+                Log.d("Login", response);
 
-            return result;
+            return response;
         }
 
         // Executes in UI thread, after the execution of
         // doInBackground()
         @Override
-        protected void onPostExecute(List<String> result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
             getActivity().runOnUiThread(new Runnable() {
@@ -251,8 +252,8 @@ public class LoginFragment extends Fragment {
             });
 
             if (result!=null){
-                Log.d("Login", result.get(0).toString());
-                checkLoginResult(result.get(0).toString());
+                Log.d("login respond", result);
+                checkLoginResult(result);
 
             }else {
                 CommnUtility.showAlert(HomeActivity.sharedInstance, "Alert", "Can not get session Information. \n Please check internet state");
@@ -268,6 +269,11 @@ public class LoginFragment extends Fragment {
             jObject = new JSONObject(jsonResult);
             if (jObject.get("message").toString().length() > 0){
                 CommnUtility.showAlert(getActivity(), "Alert", jObject.get("message").toString());
+                String sessionId = jObject.getString("sid");
+                if (!sessionId.equalsIgnoreCase("null")){
+                    Log.d("login session", jObject.getString("sid"));
+                    UserUtility.setCurrentSessionId(jObject.getString("sid"));
+                }
             }
 
         }catch(Exception e){

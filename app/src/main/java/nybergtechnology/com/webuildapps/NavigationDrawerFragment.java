@@ -128,10 +128,10 @@ public class NavigationDrawerFragment extends Fragment {
 
     public void setMenu(){
         if (HomeActivity.sharedInstance.sessionObject != null){
-            if (!UserUtility.checkNewUser(HomeActivity.sharedInstance.sessionObject.sid, HomeActivity.sharedInstance.sessionObject.uid)) {
-                setMenuAsUser();
-            }else {
+            if (UserUtility.checkNewUser(HomeActivity.sharedInstance.sessionObject.sid, HomeActivity.sharedInstance.sessionObject.uid)) {
                 setMenuAsNewUser();
+            }else {
+                setMenuAsUser();
             }
         }else {
             setMenuAsNewUser();

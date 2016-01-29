@@ -32,6 +32,7 @@ import nybergtechnology.com.webuildapps.NavigationDrawerFragment;
 import nybergtechnology.com.webuildapps.R;
 import nybergtechnology.com.webuildapps.Utility.CommnUtility;
 import nybergtechnology.com.webuildapps.Utility.Constant;
+import nybergtechnology.com.webuildapps.Utility.UserUtility;
 
 /**
  * Created by Administrator on 1/26/2016.
@@ -185,7 +186,7 @@ public class RegisterFragment extends Fragment {
         NavigationDrawerFragment.sharedInstance.OpenDrawer();
     }
 
-    private class RegisterTask extends AsyncTask<String, Void, List<String>> {
+    private class RegisterTask extends AsyncTask<String, Void, String> {
         ProgressDialog dlg;
 
         @Override
@@ -208,22 +209,23 @@ public class RegisterFragment extends Fragment {
 
         // Downloading data in non-ui thread
         @Override
-        protected List<String> doInBackground(String... params) {
+        protected String doInBackground(String... params) {
             // TODO Auto-generated method stub
-            List<String> result = new ArrayList<>();
+            String response = null;
             String url = params[0];
             String param = params[1];
-            String response = excutePost(url, param);
-            if (response != null)
-                result.add(response);
+            response = excutePost(url, param);
+            if (response != null) {
 
-            return result;
+            }
+
+            return response;
         }
 
         // Executes in UI thread, after the execution of
         // doInBackground()
         @Override
-        protected void onPostExecute(List<String> result) {
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
             getActivity().runOnUiThread(new Runnable() {
@@ -235,8 +237,8 @@ public class RegisterFragment extends Fragment {
             });
 
             if (result!=null){
-                Log.d("Login", result.get(0).toString());
-                checkRegisterResult(result.get(0).toString());
+                Log.d("Register String", result);
+                checkRegisterResult(result);
 
             }else {
                 CommnUtility.showAlert(getActivity(), "Alert", "Can not get session Information. \n Please check internet state");
@@ -246,8 +248,8 @@ public class RegisterFragment extends Fragment {
 
 
     private void checkRegisterResult(String jsonResult){
-        JSONObject jObject;
-
+        JSONObject jObject = null;
+Log.d("Register respond", jsonResult);
         try{
             jObject = new JSONObject(jsonResult);
             if (jObject.get("message").toString().length() > 0){
@@ -257,6 +259,11 @@ public class RegisterFragment extends Fragment {
 
         }catch(Exception e){
             e.printStackTrace();
+            try {
+                CommnUtility.showAlert(getActivity(), "Alert", "Registering successful!");
+            }catch (Exception e1){
+                e1.printStackTrace();
+            }
         }
     }
 

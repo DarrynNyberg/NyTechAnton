@@ -47,6 +47,24 @@ public class HomeActivity extends ActionBarActivity  implements NavigationDrawer
 
         sharedInstance = this;
         UserUtility.setContext(this);
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//        setContentView(R.layout.home_activity);
+//
+//        getSupportActionBar().hide();
+//
+//        fragmentManager = getSupportFragmentManager();
+//
+//        //slide bar menu
+//        mNavigationDrawerFragment = (NavigationDrawerFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+//
+//        // Set up the drawer.
+//        mNavigationDrawerFragment.setUp(
+//                R.id.navigation_drawer,
+//                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         getSession();
     }
 
@@ -95,6 +113,8 @@ public class HomeActivity extends ActionBarActivity  implements NavigationDrawer
         switch (position){
             case 0:
                 fragment = LoginFragment.newInstance(position + 1);
+//                fragment = AccountFragment.newInstance(100);
+
                 break;
             case 1:
                 fragment = AccountFragment.newInstance(position + 1);
@@ -167,7 +187,7 @@ public class HomeActivity extends ActionBarActivity  implements NavigationDrawer
             });
 
             if (result.length() > 0){
-                Log.d("downl", result);
+                Log.d("session", result);
                 checkUser(result);
 
             }else {
@@ -207,7 +227,7 @@ public class HomeActivity extends ActionBarActivity  implements NavigationDrawer
             br.close();
 
         }catch(Exception e){
-            Log.d("downloading url", e.toString());
+            Log.d("get session url", e.toString());
         }finally{
             iStream.close();
             urlConnection.disconnect();
